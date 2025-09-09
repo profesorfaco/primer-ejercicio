@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <title>Trabajando con datos</title>
+        <meta name="description" content="Partiendo con el troncal">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <style>
+            *{
+                margin:0;
+                padding:0;
+            }
+            body{
+                font-family:monospace;
+            }
+            main{
+                width:min(800px, 90%);
+                padding:5%;
+            }
+            main > div#aqui > div{
+                margin:1rem 0;
+                padding:1rem;
+                border:1px solid black;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <h1>Hola mundo!</h1>
+            <div id="aqui"></div>
+        </main>
+        <script>
+            const donde = document.querySelector("#aqui");
+            async function datos(raw) {
+                let consulta = await fetch(raw);
+                let data = await consulta.json();
+                console.log(data);
+                data.forEach((x)=>{
+                    donde.innerHTML += `<div>El grupo ${x.grupo}, con ${x.integrantes.length} integrantes, hizo este <a href="${x.miro}" target="_blank">tablero en miro</a> y este <a href="${x.algor}" target="_blank">resumen en algor</a></div>`
+                });
+            }
+            datos("https://raw.githubusercontent.com/profesorfaco/datos/refs/heads/main/datos.json").catch((error) => console.error(error));
+        </script>
+    </body>
+</html>
