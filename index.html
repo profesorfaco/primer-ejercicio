@@ -3,25 +3,28 @@
     <head>
         <meta charset="utf-8" />
         <title>Trabajando con datos</title>
-        <meta name="description" content="Partiendo con el troncal">
+        <meta name="description" content="Partiendo con el troncal" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <style>
-            *{
-                margin:0;
-                padding:0;
+            * {
+                margin: 0;
+                padding: 0;
             }
-            body{
-                font-family:monospace;
+            body {
+                font-family: monospace;
             }
-            main{
-                width:min(800px, 90%);
-                padding:5%;
+            main {
+                width: min(800px, 90%);
+                padding: 5%;
             }
-            main > div#aqui > div{
-                margin:1rem 0;
-                padding:1rem;
-                border:1px solid black;
+            main > div#aqui > div {
+                margin: 1rem 0;
+                padding: 1rem;
+                border: 1px solid black;
             }
+
+            p:first-child{margin-bottom:1rem;}
+
         </style>
     </head>
     <body>
@@ -35,11 +38,30 @@
                 let consulta = await fetch(raw);
                 let data = await consulta.json();
                 console.log(data);
-                data.forEach((x)=>{
-                    donde.innerHTML += `<div>El grupo ${x.grupo}, con ${x.integrantes.length} integrantes, hizo este <a href="${x.miro}" target="_blank">tablero en miro</a> y este <a href="${x.algor}" target="_blank">resumen en algor</a></div>`
+                data.forEach((x) => {
+                    donde.innerHTML += `<div><p>El grupo ${x.grupo}, con ${x.integrantes.length} integrantes, hizo este <a href="${x.miro}" target="_blank">tablero en miro</a>. También presentó este <a href="${x.pdf}" target="_blank">trabajo escrito</a>, con su <a href="${x.algor}" target="_blank">resumen en Algor</a>.</p><p><small>Grupo compuesto por: ${integrantes(x.integrantes)}<small></p></div>`;
                 });
             }
             datos("https://raw.githubusercontent.com/profesorfaco/datos/refs/heads/main/datos.json").catch((error) => console.error(error));
+
+            function integrantes(dato) {
+                let x = "";
+                dato.forEach((d, i) => {
+                    if (i == dato.length - 1) {
+                        if(d.github.length > 1){
+                            x += `y <a href="${d.github}" target="_blank">${d.nombre}</a>.`;
+                        } else {
+                            x += `y ${d.nombre}.`;
+                        }
+                    } else {
+                        if(d.github.length > 1){
+                            x += `<a href="${d.github}" target="_blank">${d.nombre}</a>, `;
+                        } else {
+                            x += `${d.nombre}, `;
+                        }                    }
+                });
+                return x;
+            }
         </script>
     </body>
 </html>
